@@ -1,0 +1,77 @@
+<%= flash[:notice] %>
+<%= flash[:update] %>
+<!--bookの詳細ページ-->
+<main>
+   <div class="container px-5 px-sm-0">
+    <div class="row">
+      <div class="col-md-3">
+        <h2>User info</h2>
+        <%= image_tag @user.profile_image, size: "200*200" %>
+      <table class="table">
+        <tbody>
+          <tr>
+            <th>name</th>
+            <th><%= @user.name %></th>
+          </tr>
+          <tr>
+            <th>introduction</th>
+            <th><%= @user.introduction %></th>
+          </tr>
+        </tbody>
+      </table>
+      <%= link_to edit_user_path(@user) do%>
+      <div class="row">
+        <!--枠-->
+        <div class= "btn btn-outline-secondary btn-block" >
+        <i class="fas fa-user-cog"></i>
+        </div>
+      </div>
+      <% end %>
+
+
+
+      <!--新規投稿-->
+      <h2>New book</h2>
+      <%= form_with model: @boooks, url: '/books'  do |f| %>
+        <h6>Title</h6>
+        <%= f.text_field :title %>
+        <h6>Opinion</h6>
+        <%= f.text_area :body %>
+        <div class="form-group">
+          <%= f.submit "Create Booktype", class:"btn btn-success"%>
+        </div>
+      <% end %>
+      </div>
+    <div class="col-md-8 offset-md-1">
+      <h2>Book detail</h2>
+      <!--レイアウト-->
+      <table class='table table-hover table-inverse'>
+        <tbody>
+          <!--複数のデータではなくひとつのデータを表示させたい-->
+          <!--each文を消してbookを@bookに変えてcontrollerに@book = Book.find(params[:id])を記述する-->
+          <tr>
+            <td><%= link_to user_path(@user) do %>
+              <%= image_tag @user.get_image, size: "200*200" %>
+              <p><%= @user.name %></p>
+            <% end %>
+            </td>
+            <td><%= link_to book_path(@book.id) do %>
+              <%= @book.title %>
+            <% end %>
+            </td>
+            <td><%= @book.body %></td>
+
+            <!--もし、投稿者 == 現在ログインしているユーザ だったら-->
+            <% if @book.user == current_user %>
+            <td><%= link_to "Edit", edit_book_path(@book.id), class: "btn btn-sm btn-success btn-block mb-3 sign_in text-light" %></td>
+            <!--%= link_to "Log in", new_user_session_path, class: "btn btn-info btn-sm btn-block mb-3 sign_in text-light"%>-->
+            <td><%= link_to "Destroy",book_path(@book.id), class: "btn  btn-sm btn-danger mb-3 sign_in text-light", "data-confirm" => "本当に消しますか?", method: :delete %></td>
+            <% end %>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+</main>
+

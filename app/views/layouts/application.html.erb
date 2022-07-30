@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<!--フッターレイアウト-->
+<html>
+  <head>
+    <title>Bookers2</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <!-- [viewport]はWEBページの表示の範囲をどう設定するかを決めるコード-->
+    <!--[name=”viewport”]は「ここで表示領域の設定をします」と宣言している、という意味-->
+    <!--[width=divice-width]は「表示領域の幅はどうするの？」→「デバイスの幅にします」という意味-->
+    <!--[initial-scale=1]はズームのことで、そのページが表示された時に1倍＝100％の拡大で表示されるということ-->
+    <!--[initial-scale=1.5]だと画面からはみ出してスクロールする必要が出てきてしまう-->
+    <!--基本的には[initial-scale=1]-->
+    <%= csrf_meta_tags %>
+    <!--Railsアプリ外部からの不正アクセスに対処するためのHTMLタグ-->
+    <!--クロスサイトリクエストフォージェリ(CSRF)の対策のために記述する-->
+    <%= csp_meta_tag %>
+    <!--Webアプリケーションに存在する脆弱性を利用した攻撃方法のこと-->
+
+    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <!--[stylehseet_pack_tag]はCSSをWebpackerで管理する際に記述する-->
+
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <!--  JavaScriptのファイルパスのみ指定する方法-->
+  <!--  [data-turbolinks-trackt="reload"]はファイルが変更された場合はフィル全体をリロードする設定にする-->
+
+  <!-- FontAwesomeの読み込み -->
+    <script src="https://kit.fontawesome.com/dca689c00c.js" crossorigin="anonymous"></script>
+  </head>
+
+  <body>
+
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+          <a class="navbar-brand" href="/"><span>Bookers</span></a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ml-auto">
+            <% if user_signed_in? %>
+            <li>
+              <%= link_to user_path(current_user), class: 'nav-link text-light' do %>
+              <i class="fas fa-home"></i>Home
+              <% end %>
+            </li>
+            <li>
+              <%= link_to users_path, class: 'nav-link text-light' do %>
+              <i class="fas fa-users"></i>Users
+              <% end %>
+            </li>
+            <li>
+              <%= link_to books_path, class: 'nav-link text-light' do %>
+              <i class="fas fa-book-open"></i>Books
+              <% end %>
+            </li>
+            <li>
+              <%= link_to destroy_user_session_path, method: :delete, class: 'nav-link text-light' do %>
+              <i class="fas fa-sign-out-alt"></i>Log out
+              <% end %>
+            </li>
+
+
+            <% else %>
+            <li>
+              <%=  link_to root_path, class: 'nav-link text-light' do %>
+               <i class="fas fa-home"></i>Home
+              <% end %>
+            </li>
+            <li>
+              <%= link_to about_path, class: 'nav-link text-light' do%>
+              <i class="fas fa-link"></i>About
+              <% end %>
+            </li>
+            <li>
+              <%= link_to new_user_registration_path, class: 'nav-link text-light' do%>
+              <i class="fas fa-user-plus"></i>Sign up
+              <% end %>
+            </li>
+            <li>
+              <%= link_to  new_user_session_path, class: 'nav-link text-light' do%>
+              <i class="fas fa-sign-in-alt"></i>Log in
+              <% end %>
+            </li>
+            <% end %>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+     <!--これがないとほかのビューファイルが開けない-->
+      <%= yield %>
+      <footer>
+        <div class='container mt-5'>
+          <div class='row'>
+            <div class='mx-auto'>
+              <p>CopyRight Infratop.inc</p>
+            </div>
+          </div>
+        </div>
+      </footer>
+  </body>
+</html>
